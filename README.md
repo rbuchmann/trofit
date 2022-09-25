@@ -1,10 +1,12 @@
 # trofit
 
-A simple macro to make defining the re-frame boilerplate easier, while not adding too much magic. Events and subs should be pretty straightforward, fx will work by applying substituting the db for the subtree you selected, and put the modified result back at the right place of the full tree, if there is a `:db` key.
+A simple macro to make defining the re-frame boilerplate easier, while not adding too much magic. Events and subs should be pretty straightforward, fx will work by substituting the db for the subtree you selected, and put the modified result back at the right place of the full tree, if there is a `:db` key.
 
 ## Usage
 
 ``` clojure
+(require '[trofit.core :refer [defsubtree]])
+
 (defsubtree [:metadata]
   :events {::set-prop (fn [db prop value] (assoc db prop value))}
   :subs {::metadata (fn [db] (select-keys db [:title :description :tags :id]))}
