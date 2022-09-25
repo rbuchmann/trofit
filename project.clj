@@ -1,4 +1,4 @@
-(defproject org.clojars.rbuchmann/trofit "0.2.0"
+(defproject org.clojars.rbuchmann/trofit "0.2.1-SNAPSHOT"
   :description "A simple macro to make defining the re-frame boilerplate more convenient"
   :url "https://github.com/rbuchmann/trofit"
   :license {:name "EPL-2.0 OR GPL-2.0-or-later WITH Classpath-exception-2.0"
