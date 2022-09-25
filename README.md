@@ -6,7 +6,7 @@ A simple macro to make defining the re-frame boilerplate easier, while not addin
 
 ``` clojure
 (defsubtree [:metadata]
-  :events {::set-prop               (fn [db prop value] (assoc db prop value))}
+  :events {::set-prop (fn [db prop value] (assoc db prop value))}
   :subs {::metadata (fn [db] (select-keys db [:title :description :tags :id]))}
   :fx {::metadata-save-button-clicked (fn [{:keys [db]} id]
                                        {:store-metadata db})})
