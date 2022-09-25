@@ -5,4 +5,6 @@
             :url "https://www.eclipse.org/legal/epl-2.0/"}
   :dependencies [[org.clojure/clojure "1.11.1"]
                  [org.clojure/clojurescript "1.10.520" :scope "provided"]]
-  :repl-options {:init-ns trofit.core})
+  :repl-options {:init-ns trofit.core}
+  :deploy-repositories [["releases" :clojars]
+                        ["snapshots" :clojars]])
