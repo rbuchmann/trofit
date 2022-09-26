@@ -1,3 +1,6 @@
+
+[![Clojars Project](https://img.shields.io/clojars/v/org.clojars.rbuchmann/trofit.svg)](https://clojars.org/org.clojars.rbuchmann/trofit)
+
 # trofit
 
 A simple macro to make defining the re-frame boilerplate easier, while not adding too much magic. Events and subs should be pretty straightforward, fx will work by substituting the db for the subtree you selected, and put the modified result back at the right place of the full tree, if there is a `:db` key.
