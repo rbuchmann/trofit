@@ -3,19 +3,43 @@
 
 # trofit
 
-A simple macro to make defining the re-frame boilerplate easier, while not adding too much magic. Events and subs should be pretty straightforward, fx will work by substituting the db for the subtree you selected, and put the modified result back at the right place of the full tree, if there is a `:db` key.
+A simple macro to make defining the re-frame boilerplate easier, while not adding too much magic. `event-db` and `sub` should be pretty straightforward, `event-fx` apply the function to the coeffects with the db replaced with just the subtree, and substitute the result back at the right place of the full tree if there is a `:db` key in the returned map.
 
 ## Usage
 
 ``` clojure
 (require '[trofit.core :refer [defsubtree]])
 
+
 (defsubtree [:metadata]
-  :events {::set-prop (fn [db prop value] (assoc db prop value))}
-  :subs {::metadata (fn [db] (select-keys db [:title :description :tags :id]))}
-  :fx {::metadata-save-button-clicked (fn [{:keys [db]} id]
-                                       {:store-metadata db})})
+  :event-db {::set-prop (fn [db prop value] (assoc db prop value))}
+  :event-fx {::metadata-save-button-clicked (fn [{:keys [db]} id]
+                                              {:db             (assoc db :dirty? false)
+                                               :store-metadata (merge db
+                                                                      {:id id})})}
+  :sub {::metadata (fn [db] (select-keys db [:title :description :tags :id]))})
+
+;; This translates to the following re-frame code:
+
+(re-frame.core/reg-event-db
+ ::set-prop
+ (fn [db [_ prop value]]
+   (assoc-in db [:metadata prop] value)))
+
+(re-frame.core/reg-event-fx
+ ::metadata-save-button-clicked
+ (fn [{:keys [db]} [_ id]]
+   {:db             (assoc-in db [:metadata :dirty?] false)
+    :store-metadata (merge (:metadata db)
+                           {:id id})}))
+
+(re-frame.core/reg-sub
+ ::metadata
+ (fn [db _]
+   (select-keys (:metadata db) [:title :description :tags :id])))
 ```
+
+The difference doesn't seem like much, but it adds up, and it also really helps with keeping track which of your code modifies which part of the tree, as well as making refactoring and moving state to different subtrees easier.
 
 ## License
 
